@@ -66,7 +66,7 @@ def flip_image(image):
     """
     Flip an image horizontally using OpenCV
     """
-    image = cv2.flip(image, 1)
+    image = cv2.flip(src = image, flipCode = 1)
     return image
     pass
 
@@ -112,6 +112,9 @@ if __name__ == "__main__":
 
     # Display the flipped grayscale image
     display_image(img_gray_flipped, "Flipped Grayscale Image")
+
+    # Save the flipped image
+    save_image(img_gray_flipped, "images/lena_gray_flipped.jpg")
 
     # Rotate the grayscale image
     img_gray_rotated = rotate_image(img_gray, 45)

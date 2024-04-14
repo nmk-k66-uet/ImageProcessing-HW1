@@ -27,7 +27,10 @@ def padding_img(img, filter_size=3):
     Return:
         padded_img: cv2 image: the padding image
     """
-  # Need to implement here
+    # Need to implement here
+    image_array = np.array(img)
+    padded_img = np.pad(image_array, pad_width=filter_size, mode = 'edge')
+    return padded_img
 
 def mean_filter(img, filter_size=3):
     """
@@ -39,7 +42,18 @@ def mean_filter(img, filter_size=3):
     Return:
         smoothed_img: cv2 image: the smoothed image with mean filter.
     """
-  # Need to implement here
+    # Need to implement here
+    img_array = padding_img(img, filter_size)
+    h, w = img.shape
+    img_new = np.zeros([h, w])
+    for i in range(filter_size, h + filter_size): 
+        for j in range(filter_size, w + filter_size): 
+            temp = img_array[i - filter_size : i + filter_size + 1, j - filter_size : j + filter_size + 1]
+            mean = np.mean(temp)
+            img_new[i - filter_size, j - filter_size] = mean
+    img_new = img_new.astype(np.uint8)
+    return img_new
+            
 
 def median_filter(img, filter_size=3):
     """
@@ -52,7 +66,16 @@ def median_filter(img, filter_size=3):
             smoothed_img: cv2 image: the smoothed image with median filter.
     """
   # Need to implement here
-
+    img_array = padding_img(img, filter_size)
+    h, w = img.shape
+    img_new = np.zeros([h, w])
+    for i in range (filter_size, h + filter_size):
+        for j in range (filter_size, w + filter_size):
+            temp = img_array[i - filter_size : i + filter_size + 1, j - filter_size : j + filter_size + 1]
+            median = np.median(temp)
+            img_new[i - filter_size, j - filter_size] = median
+    img_new = img_new.astype(np.uint8)
+    return img_new
 
 def psnr(gt_img, smooth_img):
     """
@@ -64,7 +87,12 @@ def psnr(gt_img, smooth_img):
             psnr_score: PSNR score
     """
     # Need to implement here
-
+    mse = np.mean((gt_img - smooth_img) ** 2)
+    if (mse == 0):
+        return 100
+    max_pixel = 255.0
+    psnr = 20 * math.log10(max_pixel / math.sqrt(mse))
+    return psnr
 
 
 def show_res(before_img, after_img):
@@ -88,8 +116,9 @@ def show_res(before_img, after_img):
 
 
 if __name__ == '__main__':
-    img_noise = "" # <- need to specify the path to the noise image
-    img_gt = "" # <- need to specify the path to the gt image
+    img_noise = "ex1_images/noise.png" # <- need to specify the path to the noise image
+
+    img_gt = "ex1_images/ori_img.png" # <- need to specify the path to the gt image
     img = read_img(img_noise)
     filter_size = 3
 

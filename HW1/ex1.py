@@ -90,7 +90,6 @@ def rotate_image(image, angle):
     return res
     pass
 
-
 if __name__ == "__main__":
     # Load an image from file
     img = load_image("uet.png")

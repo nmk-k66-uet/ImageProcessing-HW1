@@ -2,7 +2,7 @@ import numpy as np
 from skimage import io as io_url
 import matplotlib.pyplot as plt
 import cv2
-
+import math
 
 
 def DFT_slow(data):
@@ -14,6 +14,15 @@ def DFT_slow(data):
     DFT: Nx1: 1D numpy array 
   """
   # You need to implement the DFT here
+  N = len(data)
+  res = []
+  for i in range (0, N):
+      temp = 0
+      for k in range (0, N):
+          e = np.exp(2j * np.pi * i * k / N)
+          temp += data[k] / e
+      res.append(temp)
+  return np.array(res)
 
 
 def show_img(origin, row_fft, row_col_fft):
@@ -50,16 +59,28 @@ def DFT_2D(gray_img):
         row_col_fft: (H, W): 2D numpy array that contains the column-wise FFT of the input image
     """
     # You need to implement the DFT here
-
-
-
+    src = np.array(gray_img)
+    H, W = src.shape
+    row_fft, row_col_fft = [], []
+    for i in range (0, H):
+        temp = np.fft.fft(src[i, 0 : W])
+        row_fft.append(temp)
+    row_fft = np.array(row_fft)
+    src2 = row_fft.transpose()
+    for i in range (0, W):
+        temp = np.fft.fft(src2[i, 0 : H])
+        row_col_fft.append(temp)
+    row_col_fft = np.array(row_col_fft).transpose()
+    # row_col_fft = row_fft
+    return row_fft, row_col_fft
 
 if __name__ == '__main__':
   
     # ex1
-    # x = np.random.random(1024)
-    # print(np.allclose(DFT_slow(x), np.fft.fft(x)))
-  # ex2
+    x = np.random.random(1024)
+    # print(DFT_slow(x))
+    print(np.allclose(DFT_slow(x), np.fft.fft(x)))
+  # # ex2
     img = io_url.imread('https://img2.zergnet.com/2309662_300.jpg')
     gray_img = np.mean(img, -1)
     row_fft, row_col_fft = DFT_2D(gray_img)

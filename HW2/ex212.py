@@ -64,14 +64,15 @@ def DFT_2D(gray_img):
     row_fft, row_col_fft = [], []
     for i in range (0, H):
         temp = np.fft.fft(src[i, 0 : W])
+        # temp = DFT_slow(src[i, 0 : W])
         row_fft.append(temp)
     row_fft = np.array(row_fft)
     src2 = row_fft.transpose()
     for i in range (0, W):
         temp = np.fft.fft(src2[i, 0 : H])
+        # temp = DFT_slow(src2[i, 0 : H])
         row_col_fft.append(temp)
     row_col_fft = np.array(row_col_fft).transpose()
-    # row_col_fft = row_fft
     return row_fft, row_col_fft
 
 if __name__ == '__main__':
@@ -80,7 +81,7 @@ if __name__ == '__main__':
     x = np.random.random(1024)
     # print(DFT_slow(x))
     print(np.allclose(DFT_slow(x), np.fft.fft(x)))
-  # # ex2
+    # ex2
     img = io_url.imread('https://img2.zergnet.com/2309662_300.jpg')
     gray_img = np.mean(img, -1)
     row_fft, row_col_fft = DFT_2D(gray_img)

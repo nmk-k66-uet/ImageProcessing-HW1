@@ -29,7 +29,7 @@ def padding_img(img, filter_size=3):
     """
     # Need to implement here
     image_array = np.array(img)
-    padded_img = np.pad(image_array, pad_width=filter_size, mode = 'edge')
+    padded_img = np.pad(image_array, pad_width= filter_size // 2, mode = 'edge')
     return padded_img
 
 def mean_filter(img, filter_size=3):
@@ -46,11 +46,12 @@ def mean_filter(img, filter_size=3):
     img_array = padding_img(img, filter_size)
     h, w = img.shape
     img_new = np.zeros([h, w])
-    for i in range(filter_size, h + filter_size): 
-        for j in range(filter_size, w + filter_size): 
-            temp = img_array[i - filter_size : i + filter_size + 1, j - filter_size : j + filter_size + 1]
+    pad_width = filter_size // 2
+    for i in range(pad_width, h + pad_width): 
+        for j in range(pad_width, w + pad_width): 
+            temp = img_array[i - pad_width : i + pad_width + 1, j - pad_width : j + pad_width + 1]
             mean = np.mean(temp)
-            img_new[i - filter_size, j - filter_size] = mean
+            img_new[i - pad_width, j - pad_width] = mean
     img_new = img_new.astype(np.uint8)
     return img_new
             
@@ -69,11 +70,12 @@ def median_filter(img, filter_size=3):
     img_array = padding_img(img, filter_size)
     h, w = img.shape
     img_new = np.zeros([h, w])
-    for i in range (filter_size, h + filter_size):
-        for j in range (filter_size, w + filter_size):
-            temp = img_array[i - filter_size : i + filter_size + 1, j - filter_size : j + filter_size + 1]
+    pad_width = filter_size // 2
+    for i in range(pad_width, h + pad_width): 
+        for j in range(pad_width, w + pad_width): 
+            temp = img_array[i - pad_width : i + pad_width + 1, j - pad_width : j + pad_width + 1]
             median = np.median(temp)
-            img_new[i - filter_size, j - filter_size] = median
+            img_new[i - pad_width, j - pad_width] = median
     img_new = img_new.astype(np.uint8)
     return img_new
 

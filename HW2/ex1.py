@@ -89,6 +89,8 @@ def psnr(gt_img, smooth_img):
             psnr_score: PSNR score
     """
     # Need to implement here
+    gt_img = np.array(gt_img, dtype='double')
+    smooth_img = np.array(smooth_img, dtype='double')
     mse = np.mean((gt_img - smooth_img) ** 2)
     if (mse == 0):
         return 100
@@ -122,6 +124,7 @@ if __name__ == '__main__':
 
     img_gt = "ex1_images/ori_img.png" # <- need to specify the path to the gt image
     img = read_img(img_noise)
+    org_img = read_img(img_gt)
     filter_size = 3
 
     # Mean filter
@@ -132,5 +135,5 @@ if __name__ == '__main__':
     # Median filter
     median_smoothed_img = median_filter(img, filter_size)
     show_res(img, median_smoothed_img)
-    print('PSNR score of median filter: ', psnr(img, median_smoothed_img))
+    print('PSNR score of median filter: ', psnr(org_img, median_smoothed_img))
 
